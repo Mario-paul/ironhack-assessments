@@ -1,1 +1,2 @@
 # ironhack-assessments
+Backup of many, but not all, of the beta Ironhack assessments we were assigned during the course. Kept here for posterity to go back in case I forget anything. While they had many problems, I found assessments to be extremely educational. I highly encourage Ironhack to keep assigning them to students, while also debugging all the issues and annoyances they have as of now.
