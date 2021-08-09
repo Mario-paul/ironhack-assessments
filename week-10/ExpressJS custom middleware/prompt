@@ -1,0 +1,101 @@
+Custom Middleware
+
+
+Context
+Besides CRUD operations, one of the important topics that we covered during this module is knowing how to create and use middleware in Express. One of the use cases for middleware is to protect routes. In this exercise, you will have a chance to check your understanding of this concept.
+
+
+
+Getting Started
+All your work should be done in the files app.js and /utils/middleware.js .
+More specifically, your task is to create two middleware functions and then use them to protect the routes provided in app.js.
+
+File middleware.js is already provided for you in the /utils folder.
+
+File app.js already includes the basic Express server setup and the routes that you will need to protect with the middleware that you are about to create.
+
+Due to the testing environment setup you should not change the provided server setup, which is also indicated by the comments:
+
+/* Environment setup. Do not modify the above code. */
+
+
+To begin working, you just need to start writing your code inside the /utils/middleware.js file, and then use the created middleware in app.js as indicated by the comments /* PLACE YOUR MIDDLEWARE HERE */.
+
+
+
+Task & Objectives
+Once again, all your work should be done in the files app.js and /utils/middleware.js. All the tests can be found in the app.test.js file.
+
+You are about to protect the provided routes through a role-based system in order to allow access only to certain users based on their role.
+
+The role of the logged in users will be stored in the req.user.role property, and you will have users with three different roles: admin, editor, and user.
+
+
+
+Some additional explanation of the role system:
+
+if the logged in user is an admin, then then value of req.user.role would be "admin";
+if the logged in user is an editor, then then value of req.user.role would be "editor", and so on.
+
+
+Users will log into your application with their role given automatically, so you don't have to care about anything other than creating custom middlewares and protecting your routes as explained below.
+
+
+
+Task 1: Create the custom middleware
+In the file /utils/middleware.js create two middleware functions in charge of checking the user role.
+
+First middleware function should:
+check the current user role stored in req.user.role.
+if the role is "admin" it should allow the user to access the endpoint.
+if the role is not "admin" it should redirect the user to /login.
+Second middleware function should:
+
+check the current user role stored in req.user.role.
+if the role is "admin" or "editor", it should allow the user to access the endpoint.
+if the role is not "admin" nor "editor" it should redirect the user to /login.
+Hint: Make sure to also check the tests results and the description provided in the Run Output section for additional details. Sometimes merely wrong spelling can lead to failing tests so make sure you always check the tests.
+
+
+
+Task 2: Set the middleware to protect the existing routes
+You will find 4 unprotected routes in the app.js file, your task is to protect these routes using the middleware you created.
+
+Include your middleware(s) as intermediate argument(s) of the .get() method, replacing every /* PLACE HERE YOUR MIDDLEWARE */ comment to achieve the following goals:
+
+For the first two routes, allow access only for users with the admin role, redirecting any other user to /login
+For the last two routes, allow access both for users with admin or editor role, redirecting any other user to /login.
+
+
+Route / Endpoint	Access Allowed
+GET /delete-posts	only for users with the admin role
+GET /delete-users	only for users with the admin role
+GET /create-posts	both for users with admin or editor role
+GET /edit-posts	both for users with admin or editor role
+
+
+IMPORTANT: you have to protect every route with your middleware, so every /* PLACE HERE YOUR MIDDLEWARE */ comment must be replaced with your middleware.
+
+Hint: Make sure to also check the test results and the description provided in the Run Output section.
+
+
+
+Your code and submission
+To check on your progress and if you are passing the tests, you can click on the RUN TESTS button.
+
+In addition to this, you can reference the tests by opening the app.test.js file.
+
+Reminder: You may want to reference the test output (in the Run Output panel) since there might be some edge cases stated in the tests, that might not be too obvious from the instructions.
+
+
+
+Final Submission
+While taking the challenge, you can check your progress multiple times via the RUN TESTS button.
+
+To submit your work, you should click on the SUBMIT button. You will be asked to review your code and make a final submission. After you are done with the final submission you won't be able to resubmit your code again.
+
+
+
+Good luck!
+
+Your Ironhack team

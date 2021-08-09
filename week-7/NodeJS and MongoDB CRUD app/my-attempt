@@ -1,0 +1,74 @@
+/****************************************************/
+const express = require('express');                 //
+const bodyParser = require('body-parser');          //
+                                                    //
+const app = express();                              //
+mongoose.connect(MONGODB_URL);                      //
+                                                    //
+app.use(bodyParser.json());                         //
+app.listen(3000);                                   //
+/****************************************************/
+/* Environment setup. Do not modify the above code. */ 
+const {Schema} = require("mongoose")
+// const Schema = mongoose.Schema
+
+// MODELS
+// Create the `Album` model:
+const albumSchema = new Schema({
+  performer: String,
+  title: String,
+  cost:  Number
+})
+const Album = mongoose.model("Album", albumSchema)
+
+// Create the `User` model:
+const userSchema = new Schema({
+  name: String
+})
+const User = mongoose.model("User", userSchema)
+
+// Create the `Purchase` model:
+const purchaseSchema = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: 'User'},
+  album: {type: Schema.Types.ObjectId, ref: 'Album'}
+})
+const Purchase = mongoose.model("Purchase", purchaseSchema)
+
+
+// ROUTES
+// Create route - POST /albums
+//...
+let router = express.Router()
+
+app.post("/albums", (req, res) => {  
+//   const {performer, title, cost} = req.body
+//    Album.create( {performer, title, cost} )
+//     .then(album => res.json({data:album}))
+//     .catch((err) => console.log(err))
+  
+    Album.create(req.body)
+    .then((createdAlbum) => res.json( {data: createdAlbum}))
+})
+    
+
+// Create route - GET /albums
+// ...
+app.get("/albums", (req, res) => {
+  console.log(req.body, req.params)
+  Album.find().then((albums) => res.json(albums)).catch((err) => console.log(err))
+})
+
+// Create route - GET /albums/:albumId
+// ...
+
+
+// Create route - POST /albums/:albumId
+// ...
+
+
+// Create route - POST /albums/:albumId/delete
+// ...
+
+
+// Create route - POST /purchases - you will use .populate() here
+// ...

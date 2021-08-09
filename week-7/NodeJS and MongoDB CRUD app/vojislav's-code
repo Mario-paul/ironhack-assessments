@@ -1,0 +1,111 @@
+`/****************************************************/
+const express = require('express');                 //
+const bodyParser = require('body-parser');          //
+                                                    //
+const app = express();                              //
+mongoose.connect(MONGODB_URL);                      //
+                                                    //
+app.use(bodyParser.json());                         //
+app.listen(3000);                                   //
+/****************************************************/
+/* Environment setup. Do not modify the above code. */
+// MODELS
+// Create the `Album` model:
+const albumSchema = new mongoose.Schema(
+    {
+       performer: String,
+        title: String,
+        cost: Number
+    }
+)
+const Album = mongoose.model('Album', albumSchema)
+// Create the `User` model:
+const userSchema = new mongoose.Schema(
+    {
+       name: String,
+    }
+)
+const User = mongoose.model('User', userSchema)
+// Create the `Purchase` model:
+const purchaseSchema = new mongoose.Schema(
+    {
+       user: {type:mongoose.Schema.Types.ObjectId, ref: "User"},
+       album: {type:mongoose.Schema.Types.ObjectId, ref: "Album"},
+    }
+)
+const Purchase = mongoose.model('Purchase', purchaseSchema)
+// ROUTES
+// Create route - POST /albums
+//...
+let router = express.Router()
+app.post('/albums', (req, res) => {
+  console.log(req.body)
+  console.log('dog')
+  const {performer, title, cost} = req.body
+   Album.create( {performer, title, cost} )
+    .then(album => res.json({data:album}))
+    .catch((err) => console.log(err));
+})
+// Create route - GET /albums
+// ...
+app.post('/albums/:id', (req, res) => {
+  console.log(req.body)
+  console.log('doggyyy', req.params)
+  const {performer, title, cost} = req.body
+   Album.findByIdAndUpdate(req.params.id, {performer, title, cost}, {new:true} )
+    .then(album => res.json({data:album}))
+    .catch((err) => console.log(err));
+})
+// Create route - GET /albums/:albumId
+// ...
+app.get('/albums/:albumId', (req, res) => {
+    console.log("helo", req.params)
+    Album.findById(req.params.albumId)
+   .then(album => {
+      console.log('album', album)
+      res.json({data:album})
+    }).catch((err) => console.log(err));
+})
+// Create route - POST /albums/:albumId
+// ...
+app.post('/albums/:albumId/update', (req, res) => {
+    const {performer, title, cost} = req.body
+    Album.findByIdAndUpdate(req.params.albumId, {performer, title, cost}, {new: true})
+   .then(updatedAlbum => {
+      res.json({data:updatedAlbum})
+    }).catch((err) => console.log(err));
+})
+// Create route - POST /albums/:albumId/delete
+// ...
+app.post('/albums/:albumId/delete', (req, res) => {
+    Album.findOneAndRemove(req.params.albumId)
+   .then(() => {
+      res.sendStatus(204)
+    }).catch((err) => console.log(err));
+})
+// Create route - POST /purchases - you will use .populate() here
+// ...
+app.post('/purchases', (req, res) => {
+    const {user, album} = req.body
+    Purchase.create({user, album})
+   .then(createdPurchase => {
+     // Purchase.populate(createdPurchase, {path:'user'}).then(maybe => {
+      //  console.log(maybe, 'maybe')
+       //       res.json({ data: maybe})
+    //  })
+      Purchase.findById(createdPurchase._id)
+        .populate('user')
+        .populate('album')
+      .then(thing => {
+        console.log(thing)
+          res.json({ data: thing})
+      })
+    }).catch((err) => console.log(err));
+})
+app.get('/albums', (req, res) => {
+  Album.find({})
+  .then(allAlbums => {
+    console.log('in get', allAlbums)
+    res.json({data:allAlbums})
+  }).catch((err) => console.log('err',err));
+})`
